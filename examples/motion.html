@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var flg=0;
+var numDot;
+var cnt;
+var	timeout=2;
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var tf; 
+function up()
+{
+	alert("up!");
+	tf=fso.CreateTextFile("c:\\Users\\xbj02\\Desktop\\up.txt",true);
+}
+function down()
+{
+	alert("down!");
+	tf=fso.CreateTextFile("c:\\Users\\xbj02\\Desktop\\down.txt",true);
+}
+function left()
+{
+	alert("left!");
+	tf=fso.CreateTextFile("c:\\Users\\xbj02\\Desktop\\left.txt",true);
+}
+function right()
+{
+	alert("right!");
+	tf=fso.CreateTextFile("c:\\Users\\xbj02\\Desktop\\right.txt",true);
+}
+function start()
+{
+	
+	flg=1;
+	numDot=0;
+	cnt=0;
+}
+function record(e)
+{
+	cnt+=1;
+	//document.getElementById("demo").innerHTML=cnt;
+	if (flg==1&&numDot<10&&cnt==timeout){
+		cnt=0;
+		tf.WriteLine(Math.round(e.clientX)+
+				 ","+Math.round(e.clientY));
+		numDot+=1;
+	}
+	
+}
+function pause(e)
+{
+	flg=0;
+	while (10-numDot){
+		tf.WriteLine(Math.round(e.clientX)+
+				 ","+Math.round(e.clientY));
+		numDot+=1;
+	}
+	tf.WriteLine('');
+}
+function end()
+{
+	elert("end!");
+	tf.Close();
+}
+
+</script>
+</head>
+
+<body style="margin:0px;">
+<div id="panel" style="width:500px;height:500px;border:1px solid"
+onmousedown="start()" onmouseup="pause(event)" onmousemove="record(event)"></div>
+<p id='demo'>点击选择上下左右，再在区域内按住鼠标左键，采样拖动轨迹</p>
+<button onclick=up()>上</button>
+<button onclick=down()>下</button>
+<button onclick=left()>左</button>
+<button onclick=right()>右</button>
+<button onclick=end()>停止</button>
+</body>
+</html>
